@@ -1,22 +1,41 @@
 import './App.css'
+import TwitterFollowCard from './TwitterFollowCard'
+
+const users = [
+  {
+    userName: 'joaBass',
+    name: 'Joaquin',
+    isFollowing: true
+  },
+  {
+    userName: 'midudev',
+    name: 'Miguel',
+    isFollowing: false
+  },
+  {
+    userName: 'nachuGar',
+    name: 'Naza',
+    isFollowing: true
+  }
+]
 
 const App = () => {
   return (
-    <div>
+    <div className='App'>
       <h1 style={{ color: '#fff' }}>Twitter Card</h1>
-      <article className='tw-followCard'>
-        <header className='tw-followCard-header'>
-          <img className='tw-followCard-avatar' src='https://ui-avatars.com/api/?name=Joa+Bas' alt='El avatar de Joa' />
-          <div className='tw-followCard-info'>
-            <strong>Joaquin Bassano</strong>
-            <span className='tw-followCard-infoUserName'>@joabas98</span>
-          </div>
-        </header>
-
-        <aside>
-          <button className='tw-followCard-button'>Seguir</button>
-        </aside>
-      </article>
+      {
+        users.map(user => {
+          const { userName, name, isFollowing } = user
+          return (
+            <TwitterFollowCard
+              initialIsFollowing={isFollowing}
+              userName={userName}
+              name={name}
+              key={userName}
+            />
+          )
+        })
+      }
     </div>
   )
 }
