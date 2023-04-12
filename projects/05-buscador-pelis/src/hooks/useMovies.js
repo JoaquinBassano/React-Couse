@@ -1,13 +1,13 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo, useCallback } from 'react'
 import { searchMovies } from '../services/getMovies'
 
-export function useMovies ({ query }) {
+export function useMovies ({ query, sort }) {
   const [movies, setMovies] = useState([])
 
   // Esta ref permite que una misma busqueda no se realize dos veces
   const previousSearch = useRef(query)
 
-  const getMovies = async () => {
+  const getMovies = useCallback(async ({ query }) => {
     if (query === previousSearch.current) return
 
     try {
@@ -17,7 +17,13 @@ export function useMovies ({ query }) {
     } catch (e) {
       console.log(e)
     }
-  }
+  }, [])
 
-  return { movies, getMovies }
+  const sortedMovies = useMemo(() => {
+    return sort
+      ? [...movies].sort((a, b) => a.title.localeCompare(b.title))
+      : movies
+  }, [sort, movies])
+
+  return { movies: sortedMovies, getMovies }
 }
